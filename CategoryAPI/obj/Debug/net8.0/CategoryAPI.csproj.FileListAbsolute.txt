@@ -143,3 +143,4 @@ D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CategoryAPI\obj\Deb
 D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CategoryAPI\obj\Debug\net8.0\CategoryAPI.pdb
 D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CategoryAPI\obj\Debug\net8.0\CategoryAPI.genruntimeconfig.cache
 D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CategoryAPI\obj\Debug\net8.0\ref\CategoryAPI.dll
+D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CategoryAPI\obj\Debug\net8.0\CategoryAPI.sourcelink.json

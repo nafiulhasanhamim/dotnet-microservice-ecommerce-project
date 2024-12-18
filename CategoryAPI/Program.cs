@@ -122,6 +122,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//custom response for 401 unauthorized or 403 Forbidden
+app.UseMiddleware<CustomUnauthorizedResponseMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

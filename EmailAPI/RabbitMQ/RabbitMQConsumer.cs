@@ -36,7 +36,6 @@ namespace EmailAPI.RabbitMQ
 
             CreateConsumer("sentEmail", async (message) =>
             {
-                Console.WriteLine("email is sent");
                 var eventMessage = JsonSerializer.Deserialize<EventDTO>(message);
                 if (eventMessage == null)
                 {

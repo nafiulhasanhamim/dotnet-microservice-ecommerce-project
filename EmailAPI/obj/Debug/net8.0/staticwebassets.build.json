@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "wBbOOxvwM5/wILL7z0jk3/HMn9L3RFvUaoyEGS+91FQ=",
+  "Source": "dotnet-mvc",
+  "BasePath": "_content/dotnet-mvc",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

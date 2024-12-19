@@ -27,15 +27,16 @@ namespace EmailAPI.RabbitMQ
 
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare("emailSent", false, false, false, null);
+            _channel.QueueDeclare("sentEmail", false, false, false, null);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             stoppingToken.ThrowIfCancellationRequested();
 
-            CreateConsumer("emailSent", async (message) =>
+            CreateConsumer("sentEmail", async (message) =>
             {
+                Console.WriteLine("email is sent");
                 var eventMessage = JsonSerializer.Deserialize<EventDTO>(message);
                 if (eventMessage == null)
                 {

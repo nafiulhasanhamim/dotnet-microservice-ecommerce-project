@@ -28,7 +28,7 @@ namespace CategoryAPI.RabbitMQ
             if (ConnectionExists())
             {
                 using var channel = _connection.CreateModel();
-                if (name == "exchange")
+                if (type == "exchange")
                 {
                     channel.ExchangeDeclare(exchange: name, type: ExchangeType.Fanout);
 

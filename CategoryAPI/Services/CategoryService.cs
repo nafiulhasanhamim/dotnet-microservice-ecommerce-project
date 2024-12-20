@@ -5,8 +5,7 @@ using CategoryAPI.DTOs;
 using CategoryAPI.Enums;
 using CategoryAPI.Interfaces;
 using CategoryAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+using CategoryAPI.RabbitMQ;
 using Microsoft.EntityFrameworkCore;
 
 namespace CategoryAPI.Services
@@ -15,11 +14,15 @@ namespace CategoryAPI.Services
     {
         private readonly AppDbContext _appDbContext;
         private readonly IMapper _mapper;
+        // private readonly IRabbmitMQCartMessageSender _messagebus;
 
-        public CategoryService(AppDbContext appDbContext, IMapper mapper)
+        public CategoryService(AppDbContext appDbContext, IMapper mapper,
+        IRabbmitMQCartMessageSender messageBus
+        )
         {
             _mapper = mapper;
             _appDbContext = appDbContext;
+            // _messagebus = messageBus;
         }
 
         public async Task<PaginatedResult<CategoryReadDto>> GetAllCategories(int pageNumber, int pageSize, string? search = null, string? sortOrder = null)
@@ -52,7 +55,8 @@ namespace CategoryAPI.Services
                     };
                 }
             }
-
+            // _messagebus.SendMessage(new { UserId = new List<string> { "fjfjfjfjf", "fhfhfh" }, Entity = "category", EntityId = "12234ghjhgjh4", Title = "Categories", Message = "Category Fetched", Whom = "User"}, "sentNotification", "queue");
+            // _messagebus.SendMessage(new { UserId = new List<string> {}, Entity = "category", EntityId = "12234ghjhgjh4", Title = "Categories", Message = "Category Fetched", Whom = "Admin"}, "sentNotification", "queue");
             var totalCount = await query.CountAsync();
             var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             var results = _mapper.Map<List<CategoryReadDto>>(items);
@@ -71,7 +75,6 @@ namespace CategoryAPI.Services
             var foundCategory = await _appDbContext.Categories
                                            .Include(c => c.SubCategories)
                                            .FirstOrDefaultAsync(c => c.CategoryId == categoryId);
-            // var foundCategory = _appDbContext.Categories.Include(c => c.SubCategories);
             return foundCategory == null ? null : _mapper.Map<CategoryReadDto>(foundCategory);
         }
 

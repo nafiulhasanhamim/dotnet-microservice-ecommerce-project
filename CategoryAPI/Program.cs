@@ -1,6 +1,7 @@
 using System.Text;
 using CategoryAPI.data;
 using CategoryAPI.Interfaces;
+using CategoryAPI.RabbitMQ;
 using CategoryAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +18,10 @@ var configuration = builder.Configuration;
 
 // builder.Services.AddSingleton<CategoryService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+//RabbitMQ
+builder.Services.AddSingleton<IRabbmitMQCartMessageSender, RabbmitMQCartMessageSender>();
+builder.Services.AddHostedService<RabbitMQConsumer>();
 
 //add automapper service
 builder.Services.AddAutoMapper(typeof(Program));

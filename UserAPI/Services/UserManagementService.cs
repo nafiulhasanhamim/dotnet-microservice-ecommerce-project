@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using User.Management.Service.Models;
 using User.Management.Service.Models.Authentication.SignUp;
+using UserAPI.DTOs;
 using UserAPI.Interfaces;
 using UserAPI.Models;
 using UserAPI.Models.Authentication.Login;
@@ -261,5 +262,16 @@ public class UserManagementService : IUserManagement
             );
 
         return token;
+    }
+
+    public async Task<IEnumerable<AdminDto>> GetAdmins()
+    {
+        var adminUsers = await _userManager.GetUsersInRoleAsync("Admin");
+        var adminIds = adminUsers.Select(admin => new AdminDto
+        {
+            UserId = admin.Id,
+        }).ToList();
+
+        return adminIds;
     }
 }

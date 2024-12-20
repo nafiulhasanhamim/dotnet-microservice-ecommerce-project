@@ -152,5 +152,13 @@ namespace UserAPI.Controllers
             return ApiResponse.BadRequest("Invalid Code");
         }
 
+        [HttpGet]
+        [Route("admin")]
+        public async Task<IActionResult> GetAllAdmins()
+        {
+            var admins = await _user.GetAdmins();
+            return Ok(admins);
+        }
+
     }
 }

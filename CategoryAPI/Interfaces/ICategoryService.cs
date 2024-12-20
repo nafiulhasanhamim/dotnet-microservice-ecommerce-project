@@ -1,7 +1,5 @@
 using CategoryAPI.Controllers;
 using CategoryAPI.DTOs;
-using Microsoft.AspNetCore.Mvc;
-
 namespace CategoryAPI.Interfaces
 {
     public interface ICategoryService

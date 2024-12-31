@@ -144,3 +144,6 @@ D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CouponAPI\obj\Debug
 D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CouponAPI\obj\Debug\net8.0\CouponAPI.pdb
 D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CouponAPI\obj\Debug\net8.0\CouponAPI.genruntimeconfig.cache
 D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CouponAPI\obj\Debug\net8.0\ref\CouponAPI.dll
+D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CouponAPI\bin\Debug\net8.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CouponAPI\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+D:\FullStack\.net\dotnet-ecommerce-project-with-microservice\CouponAPI\bin\Debug\net8.0\StackExchange.Redis.dll

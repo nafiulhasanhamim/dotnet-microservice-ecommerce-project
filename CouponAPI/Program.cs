@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using CouponAPI.Services.Caching;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,8 @@ builder.Services.AddScoped<ICouponService, CouponService>();
 //RabbitMQ
 builder.Services.AddSingleton<IRabbmitMQCartMessageSender, RabbmitMQCartMessageSender>();
 builder.Services.AddHostedService<RabbitMQConsumer>();
-
+//for redis
+builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 //add automapper service
 builder.Services.AddAutoMapper(typeof(Program));
 //signalR
@@ -29,6 +31,13 @@ builder.Services.AddAutoMapper(typeof(Program));
 //database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//for redis
+builder.Services.AddStackExchangeRedisCache(option =>
+{
+    option.Configuration = builder.Configuration.GetConnectionString("Redis");
+    option.InstanceName = "ecommerce";
+});
 
 //configure the CORS policy
 builder.Services.AddCors(opt =>

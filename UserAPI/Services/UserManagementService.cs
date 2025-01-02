@@ -274,4 +274,22 @@ public class UserManagementService : IUserManagement
 
         return adminIds;
     }
+
+    public async Task<UserDto> GetUser(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+
+        if (user == null) return null;
+
+        var roles = await _userManager.GetRolesAsync(user);
+        return new UserDto()
+        {
+            UserId = id,
+            Email = user.Email,
+            UserName = user.UserName,
+            Roles = roles
+        };
+
+    }
+
 }

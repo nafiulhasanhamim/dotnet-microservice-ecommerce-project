@@ -36,7 +36,8 @@ namespace Services.ProductAPI.Controllers
         public async Task<IActionResult> GetById(string id)
         {
             var product = await _productService.GetByIdAsync(id);
-            return Ok(product);
+            if(product == null) return ApiResponse.BadRequest("Product with this id is not found");
+            return ApiResponse.Success(product);
         }
 
         [HttpPost]

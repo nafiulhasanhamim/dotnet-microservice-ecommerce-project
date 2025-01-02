@@ -160,5 +160,13 @@ namespace UserAPI.Controllers
             return Ok(admins);
         }
 
+        [HttpGet]
+        [Route("user")]
+        public async Task<IActionResult> GetUser(string id)
+        {
+            var user = await _user.GetUser(id);
+            return Ok(user);
+        }
+
     }
 }

@@ -56,8 +56,8 @@ namespace CategoryAPI.Controllers
         }
 
         // [Authorize(Roles = "Admin")]
-        [HttpPut("{categoryId:guid}")]
-        public async Task<IActionResult> UpdateCategoryById(Guid categoryId, [FromBody] CategoryUpdateDto categoryData)
+        [HttpPut("{categoryId}")]
+        public async Task<IActionResult> UpdateCategoryById(string categoryId, [FromBody] CategoryUpdateDto categoryData)
         {
             var foundCategory = await _categoryService.UpdateCategoryById(categoryId, categoryData);
             if (foundCategory == null)
@@ -73,8 +73,8 @@ namespace CategoryAPI.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("{categoryId:guid}")]
-        public async Task<IActionResult> DeleteCategoryById(Guid categoryId)
+        [HttpDelete("{categoryId}")]
+        public async Task<IActionResult> DeleteCategoryById(string categoryId)
         {
             var foundCategory = await _categoryService.DeleteCategoryById(categoryId);
             if (!foundCategory)

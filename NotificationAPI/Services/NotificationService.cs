@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +15,16 @@ namespace NotificationAPI.Services
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IHubContext<ChatHub> _chatHubContext;
 
 
-        public NotificationService(AppDbContext appDbContext, IMapper mapper, IHubContext<NotificationHub> hubContext, IUserService userService)
+        public NotificationService(AppDbContext appDbContext, IMapper mapper,
+        IHubContext<NotificationHub> hubContext, IUserService userService, IHubContext<ChatHub> chatHubContext)
         {
             _mapper = mapper;
             _appDbContext = appDbContext;
             _hubContext = hubContext;
+            _chatHubContext = chatHubContext;
             _userService = userService;
         }
 
@@ -139,6 +138,8 @@ namespace NotificationAPI.Services
             }
             return true;
         }
+
     }
+
 
 }

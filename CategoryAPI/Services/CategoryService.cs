@@ -14,7 +14,7 @@ namespace CategoryAPI.Services
     {
         private readonly AppDbContext _appDbContext;
         private readonly IMapper _mapper;
-        // private readonly IRabbmitMQCartMessageSender _messagebus;
+        private readonly IRabbmitMQCartMessageSender _messagebus;
 
         public CategoryService(AppDbContext appDbContext, IMapper mapper,
         IRabbmitMQCartMessageSender messageBus
@@ -22,7 +22,7 @@ namespace CategoryAPI.Services
         {
             _mapper = mapper;
             _appDbContext = appDbContext;
-            // _messagebus = messageBus;
+            _messagebus = messageBus;
         }
 
         public async Task<PaginatedResult<CategoryReadDto>> GetAllCategories(int pageNumber, int pageSize, string? search = null, string? sortOrder = null)
@@ -86,17 +86,10 @@ namespace CategoryAPI.Services
 
             await _appDbContext.Categories.AddAsync(newCategory);
             await _appDbContext.SaveChangesAsync();
-
-            //     return new CategoryReadDto {
-            //     CategoryId = newCategory.CategoryId,
-            //     Name = newCategory.Name,
-            //     Description = newCategory.Description
-            // };
-
             return _mapper.Map<CategoryReadDto>(newCategory);
 
         }
-        public async Task<CategoryReadDto?> UpdateCategoryById(Guid categoryId, CategoryUpdateDto categoryData)
+        public async Task<CategoryReadDto?> UpdateCategoryById(string categoryId, CategoryUpdateDto categoryData)
         {
             // var foundCategory = _categories.FirstOrDefault(category => category.CategoryId == categoryId);
             // var foundCategory = await _appDbContext.Categories.FirstOrDefaultAsync(category => category.CategoryId == categoryId);
@@ -122,10 +115,8 @@ namespace CategoryAPI.Services
 
         }
 
-        public async Task<bool> DeleteCategoryById(Guid categoryId)
+        public async Task<bool> DeleteCategoryById(string categoryId)
         {
-            // var foundCategory = _categories.FirstOrDefault(category => category.CategoryId == categoryId);
-            // var foundCategory = await _appDbContext.Categories.FirstOrDefaultAsync(category => category.CategoryId == categoryId);
             var foundCategory = await _appDbContext.Categories.FindAsync(categoryId);
             if (foundCategory == null)
             {
@@ -134,21 +125,17 @@ namespace CategoryAPI.Services
             _appDbContext.Categories.Remove(foundCategory);
             await _appDbContext.SaveChangesAsync();
             return true;
-
-
         }
-        private List<CategoryReadDto> BuildCategoryHierarchy(List<CategoryReadDto> categories, string? parentId = null)
+        public async Task<bool> IsCategoryValid(EventDto eventMessage)
         {
-            return categories
-                .Where(c => c.ParentId == parentId)
-                .Select(c => new CategoryReadDto
-                {
-                    CategoryId = c.CategoryId,
-                    Name = c.Name!,
-                    Description = c.Description,
-                    SubCategories = BuildCategoryHierarchy(categories, c.CategoryId)
-                })
-                .ToList();
+            var foundCategory = await _appDbContext.Categories.FindAsync(eventMessage.CId);
+            if (foundCategory == null)
+            {
+                _messagebus.SendMessage(eventMessage, "categoryCheckFailed", "queue");
+                return false;
+            }
+            _messagebus.SendMessage(eventMessage, "categoryCheckSuccess", "queue");
+            return true;
         }
 
     }

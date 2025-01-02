@@ -24,7 +24,17 @@ namespace dotnet_mvc.Services.Caching
             {
                 return default(T);
             }
-            return JsonSerializer.Deserialize<T>(data);
+            try
+            {
+                return JsonSerializer.Deserialize<T>(data, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+            }
+            catch (JsonException ex)
+            {
+                return default;
+            }
         }
 
         public async void RemoveData(string key)

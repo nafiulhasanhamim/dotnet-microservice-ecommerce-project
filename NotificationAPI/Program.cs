@@ -158,7 +158,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 //signalR setup
-app.MapHub<NotificationHub>("/notificationHub");
+// app.MapHub<NotificationHub>("/notificationHub");
+app.MapHub<ChatHub>("/chatHub");
 app.MapControllers();
 //CORS setup
 app.UseCors("reactApp");

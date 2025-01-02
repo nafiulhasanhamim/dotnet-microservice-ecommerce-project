@@ -13,7 +13,7 @@ namespace ProductAPI.Services
         }
         private void _timer_Callback(object? state)
         {
-            Console.WriteLine("background service is called");
+            // Console.WriteLine("background service is called");
         }
     }
 }

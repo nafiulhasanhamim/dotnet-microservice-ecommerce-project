@@ -26,9 +26,6 @@ namespace ProductAPI.Services
 
         public async Task<PaginatedResult<ProductReadDto>> GetAllAsync(int pageNumber, int pageSize, string? search = null, string? sortOrder = null)
         {
-            // var products = await _context.Products.ToListAsync();
-            // return _mapper.Map<IEnumerable<ProductReadDto>>(products);
-
             IQueryable<Product> query = _context.Products;
 
             if (!string.IsNullOrWhiteSpace(search))
@@ -73,7 +70,7 @@ namespace ProductAPI.Services
         public async Task<ProductReadDto> GetByIdAsync(string id)
         {
             var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == id);
-            if (product == null) throw new KeyNotFoundException("Product not found");
+            if (product == null) return null;
             return _mapper.Map<ProductReadDto>(product);
         }
 
@@ -81,9 +78,11 @@ namespace ProductAPI.Services
         {
             var product = _mapper.Map<Product>(productDto);
             product.ProductId = Guid.NewGuid().ToString();
-            product.CreatedAt = DateTime.UtcNow; 
+            product.CategoryVerify = true;
+            product.CreatedAt = DateTime.UtcNow;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+            _messageBus.SendMessage(new { PId = product.ProductId, CId = productDto.CategoryId }, "categoryCheck", "queue");
             return _mapper.Map<ProductReadDto>(product);
         }
 
@@ -102,7 +101,7 @@ namespace ProductAPI.Services
         public async Task<bool> DeleteAsync(string id)
         {
             var product = await _context.Products.FindAsync(id);
-            if (product == null) throw new KeyNotFoundException("Product not found");
+            if (product == null) return false;
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();

@@ -14,10 +14,13 @@ namespace NotificationAPI.RabbitMQ
         private readonly IServiceProvider _serviceProvider;
         private IConnection _connection;
         private IModel _channel;
+        private readonly IHubContext<ChatHub> _chatHubContext;
 
-        public RabbitMQConsumer(IServiceProvider serviceProvider, IConfiguration configuration, IHubContext<NotificationHub> hubContext)
+
+        public RabbitMQConsumer(IServiceProvider serviceProvider, IConfiguration configuration, IHubContext<ChatHub> chatHubContext)
         {
             _serviceProvider = serviceProvider;
+            _chatHubContext = chatHubContext;
             var factory = new ConnectionFactory
             {
                 HostName = configuration.GetSection("RabbitMQ")["HostName"],
@@ -28,6 +31,8 @@ namespace NotificationAPI.RabbitMQ
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare("sentNotification", false, false, false, null);
+            _channel.QueueDeclare("chatReceiverNotification", false, false, false, null);
+            _channel.QueueDeclare("chatSenderNotification", false, false, false, null);
             // _channel.ExchangeDeclare(exchange: "OrderExchange", type: ExchangeType.Fanout);
         }
 
@@ -50,6 +55,33 @@ namespace NotificationAPI.RabbitMQ
             //     //     emailService.SendEmail(messages);
             //     // }
             // });
+
+            CreateConsumer("chatReceiverNotification", async (message) =>
+            {
+
+                var eventMessage = JsonSerializer.Deserialize<ChatEventDto>(message);
+                if (eventMessage == null)
+                {
+                    return;
+                }
+                foreach (var userId in eventMessage.UserId!)
+                {
+                    await _chatHubContext.Clients.Group($"user:{userId}").SendAsync("ChatReceiverMessage", eventMessage.Message);
+                }
+            });
+
+            CreateConsumer("chatSenderNotification", async (message) =>
+            {
+                var eventMessage = JsonSerializer.Deserialize<ChatEventDto>(message);
+                if (eventMessage == null)
+                {
+                    return;
+                }
+                foreach (var userId in eventMessage.UserId!)
+                {
+                    await _chatHubContext.Clients.Group($"user:{userId}").SendAsync("ChatSenderMessage", eventMessage.Message);
+                }
+            });
 
             CreateConsumer("sentNotification", async (message) =>
             {

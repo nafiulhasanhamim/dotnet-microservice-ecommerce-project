@@ -8,7 +8,8 @@ namespace CategoryAPI.Interfaces
         Task<CategoryReadDto?> GetCategoryById(string categoryId);
         // CategoryReadDto GetCategoryById(string categoryId);
         Task<CategoryReadDto> CreateCategory(CategoryCreateDto categoryData);
-        Task<CategoryReadDto?> UpdateCategoryById(Guid categoryId, CategoryUpdateDto categoryData);
-        Task<bool> DeleteCategoryById(Guid categoryId);
+        Task<CategoryReadDto?> UpdateCategoryById(string categoryId, CategoryUpdateDto categoryData);
+        Task<bool> DeleteCategoryById(string categoryId);
+        Task<bool> IsCategoryValid(EventDto eventMessage);
     }
 }

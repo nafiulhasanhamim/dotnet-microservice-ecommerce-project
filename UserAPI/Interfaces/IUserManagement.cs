@@ -16,7 +16,7 @@ namespace UserAPI.Interfaces
         Task<ApiResponseUser<LoginResponse>> GetJwtTokenAsync(ApplicationUser user);
         Task<ApiResponseUser<LoginResponse>> RenewAccessTokenAsync(LoginResponse tokens);
         Task<IEnumerable<AdminDto>> GetAdmins();
-
+        Task<UserDto> GetUser(string id);
 
     }
 }

@@ -7,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProductAPI;
 using ProductAPI.Interfaces;
-using ProductAPI.Messaging;
 using ProductAPI.RabbitMQ;
 using ProductAPI.Services;
 using ProductAPI.Services.Caching;
@@ -127,6 +126,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//custom response for 401 unauthorized or 403 Forbidden
+app.UseMiddleware<CustomUnauthorizedResponseMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

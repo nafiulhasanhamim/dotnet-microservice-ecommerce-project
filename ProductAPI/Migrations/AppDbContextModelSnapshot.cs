@@ -58,6 +58,10 @@ namespace ProductAPI.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("ThreshholdQuantity")
                         .HasColumnType("integer");
 

@@ -42,6 +42,18 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin"));
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ChatPolicy", policy =>
+        policy.RequireRole("Admin", "User"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CartPolicy", policy =>
+        policy.RequireRole("User"));
+});
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

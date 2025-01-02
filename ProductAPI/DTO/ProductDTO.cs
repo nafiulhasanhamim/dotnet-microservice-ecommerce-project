@@ -8,6 +8,7 @@ namespace ProductAPI.DTOs
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public int Quantity { get; set; }
+        public string Status { get; set; }
         public int ThreshholdQuantity { get; set; }
         public string CategoryId { get; set; } = null!;
     }
@@ -21,6 +22,7 @@ namespace ProductAPI.DTOs
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public int Quantity { get; set; }
+        public string Status { get; set; }
         public int ThreshholdQuantity { get; set; }
         public bool CategoryVerify { get; set; }
         public string CategoryId { get; set; } = null!;
@@ -35,6 +37,7 @@ namespace ProductAPI.DTOs
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public int Quantity { get; set; }
+        public string Status { get; set; }
         public int ThreshholdQuantity { get; set; }
         public string CategoryId { get; set; } = null!;
         public bool CategoryVerify { get; set; }
